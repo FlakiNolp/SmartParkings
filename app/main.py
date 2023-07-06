@@ -1,13 +1,15 @@
 from fastapi import FastAPI
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
-from app.routers import routers
+from routers import routers
 
 
 app = FastAPI()
 app.include_router(routers.router)
 
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 origins = [
     "*"
 ]
@@ -27,4 +29,4 @@ async def startup():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=80)
+    uvicorn.run(app, host="localhost", port=8080)
