@@ -7,10 +7,13 @@
 </head>
 
 <body>
-    <input id="substr" />
-    <select id="buildingslist">
+    <input id="substr" onchange="GetAddresses()"/>
+    <select id="buildingslist" onchange="GetBuildingPlaces()">
     </select>
-    <button onclick="GetAddresses()">тык</button>
+    <select id="slotslist" onchange="CalculatePrice()" multiple>
+    </select>
+    <div>цена: </div>
+    <div id="price"></div>
 </body>
 <script src="{{ url_for('static', path='js/renting.js') }}"></script>
 
