@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбрать лот</title>
+</head>
+<body>
+<form method="get" onsubmit="redirect(event, this)">
+  <label for="all_lots">Выберете лот</label>
+  <select id="all_lots"></select>
+  <button type="submit">Выбрать</button>
+</form>
+</body>
+<script>
+  function redirect(e, form) {
+      e.preventDefault();
+      return window.location.href = `/select-slot?id_value=${form.all_lots.selectedIndex}`;
+      //return window.location.href = `https://api-uae-test.ujin.tech/api/v1/parking/slots/simple-list?token=ust-739005-c8bb190f92541a2c1e839b98cbc469c9&per_page=10&lot_id=${form.all_lots}`
+  }
+
+  function insert(json){
+      let select = document.getElementById('all_lots');
+          for (let lot in json.data.lots){
+              if (json.data.lots[lot].is_rent_available === true){
+                  var option = new Option();
+                  option.value = json.data.lots[lot].id;
+                  option.label = json.data.lots[lot].title;
+                  select.add(option);
+              }
+          }
+  }
+
+  async function send() {
+      let result = await fetch('https://api-uae-test.ujin.tech/api/v1/parking/lots/list?token=ust-739005-c8bb190f92541a2c1e839b98cbc469c9&app=crm', {
+          method: 'get',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      if (result) {
+          let result_json = await result.json();
+          insert(result_json);
+      } else {
+          return alert('Неверная почта или пароль');
+      }
+  }
+
+  send()
+</script>
+</html>
