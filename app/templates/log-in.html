@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+</head>
+<body>
+  <form method="post" content="application/x-www-form-urlencoded" onsubmit="send(event,this)">
+      <label>Почта</label><input id="username" type="email">
+      <label>Пароль</label><input id="password" type="password">
+      <input type="submit" value="Войти">
+  </form>
+</body>
+<script>
+    function redirect(data) {
+        document.cookie = `token=ust-738991-d0d9e1a429f95dc14acba969bd214d86; SameSite: Strict; max-age=2592000`;
+        localStorage.setItem("token", "ust-738991-d0d9e1a429f95dc14acba969bd214d86");
+        return window.location.href = "/select-lot";
+    }
+
+    async function send(e, form) {
+        e.preventDefault();
+        let result = await fetch('https://api-uae-test.ujin.tech/api/v1/auth/crm/authenticate', {method:'post',
+            body: new URLSearchParams({'login': form.username.value,
+                'password': form.password.value}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+        form.reset();
+        if (result.ok){
+            return redirect(await result.json());
+        }
+        else{
+            return alert('Неверная почта или пароль');
+        }
+    }
+</script>
+</html>

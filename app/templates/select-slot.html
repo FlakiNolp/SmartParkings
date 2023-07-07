@@ -5,7 +5,8 @@
     <title>Выбрать слот</title>
 </head>
 <body>
-
+  <label for="all_lots">Выберете лот</label>
+  <select id="all_lots"></select>
 </body>
 <script>
   function redirect(e, form) {
@@ -16,12 +17,22 @@
 
   function insert(json){
       let select = document.getElementById('all_slots');
-          for (let lot in json.data.lots){
-              if (json.data.lots[lot].is_rent_available === true){
-                  var option = new Option();
-                  option.value = json.data.lots[lot].id;
-                  option.label = json.data.lots[lot].title;
-                  select.add(option);
+          for (let lot in json.data.slots){
+              lot = json.data.slots[lot];
+              if (lot.is_rent_available === true){
+                  if (lot.is_taken === false){
+                      var option = new Option();
+                      option.value = lot.id;
+                      option.label = lot.number;
+                      select.add(option);
+                  }
+                  else{
+                      var option = new Option();
+                      option.value = lot.id;
+                      option.label = lot.number;
+                      option.disabled = true;
+                      select.add(option);
+                  }
               }
           }
   }

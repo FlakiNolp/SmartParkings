@@ -4,6 +4,11 @@ from app.config import templates
 router = APIRouter()
 
 
+@router.get("/log-in")
+async def log_in(request: Request):
+    return templates.TemplateResponse("log-in.html", context={"request": request})
+
+
 @router.get("/select-lot")
 async def select_lot(request: Request):
     return templates.TemplateResponse("select-lot.html", context={"request": request})
